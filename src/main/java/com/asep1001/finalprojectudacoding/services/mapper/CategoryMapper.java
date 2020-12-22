@@ -14,6 +14,7 @@ public interface CategoryMapper {
 
     @Mapping(target = "id", expression = "java(entity.getCategoryId())" )
     @Mapping(target = "incomes", expression = "java(entity.changeToIncomeDto())")
+    @Mapping(target = "expenses", expression = "java(entity.changeToExpensesDto())")
     CategoryDTO toDto(Category entity);
 //    Category toEntity(CategoryDTO dto);
 

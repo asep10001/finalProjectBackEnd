@@ -62,6 +62,7 @@ public class Category extends BaseEntity<String> implements Serializable {
     }
 
     public List<ExpensesDTO> changeToExpensesDto() {
+
         return this.toExDtos().apply(expenses);
     }
 
