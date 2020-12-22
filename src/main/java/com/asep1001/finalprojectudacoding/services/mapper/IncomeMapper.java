@@ -25,6 +25,6 @@ public interface IncomeMapper {
 
     @Named("getCategoryName")
     default String categoryEntityGetCategoryName(Category categoryEntity) {
-        return categoryEntity.getCategory_name();
+        return categoryEntity.getName();
     }
 }

@@ -15,16 +15,16 @@ public interface ExpensesMapper {
 
     ExpensesMapper INSTANCE = Mappers.getMapper(ExpensesMapper.class);
 
-    @Mapping(target = "id", expression = "java(getExpensesId())")
+    @Mapping(target = "id", expression = "java(entity.getExpensesId())")
     @Mapping(source = "category", target="category_name", qualifiedByName = "getCategoryName")
     ExpensesDTO toDto(Expenses entity);
-    Expenses toEntity(ExpensesDTO dto);
+//    Expenses toEntity(ExpensesDTO dto);
 
     List<ExpensesDTO> toDtos(List<Expenses> entities);
-    List<Expenses> toEntities(List<ExpensesDTO> dtos);
+//    List<Expenses> toEntities(List<ExpensesDTO> dtos);
 
     @Named("getCategoryName")
     default String categoryEntityGetCategoryName(Category categoryEntity) {
-        return categoryEntity.getCategory_name();
+        return categoryEntity.getName();
     }
 }

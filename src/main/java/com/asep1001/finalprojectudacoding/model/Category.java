@@ -28,8 +28,8 @@ public class Category extends BaseEntity<String> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "category_name", nullable = false)
-    private String category_name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @JsonManagedReference("category")
     @OneToMany(

@@ -1,12 +1,14 @@
 package com.asep1001.finalprojectudacoding.controllers;
 
+import com.asep1001.finalprojectudacoding.model.Category;
 import com.asep1001.finalprojectudacoding.services.CategoryService;
 import com.asep1001.finalprojectudacoding.services.dto.CategoryDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import javax.validation.Valid;
+
 
 @RestController
 public class CategoryController {
@@ -24,5 +26,12 @@ public class CategoryController {
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategories(){
         return categoryService.getAllCategories();
+    }
+
+    @PostMapping("/categories")
+    public ResponseEntity<CategoryDTO> saveAuthor(
+            @Valid @RequestBody Category request
+    ) {
+        return categoryService.createCategory(request);
     }
 }
