@@ -18,10 +18,10 @@ public interface IncomeMapper {
     @Mapping(target = "id", expression = "java(entity.getIncomeId())")
     @Mapping(source = "category", target = "category_name", qualifiedByName = "getCategoryName")
     IncomeDTO toDto(Income entity);
-    Income toEntity(IncomeDTO dto);
+//    Income toEntity(IncomeDTO dto);
 
     List<IncomeDTO> toDtos(List<Income> entities);
-    List<Income> toEntities(List<IncomeDTO> dtos);
+//    List<Income> toEntities(List<IncomeDTO> dtos);
 
     @Named("getCategoryName")
     default String categoryEntityGetCategoryName(Category categoryEntity) {
