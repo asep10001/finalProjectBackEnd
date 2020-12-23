@@ -60,4 +60,11 @@ public class IncomeService {
         return this.getAnIncome().apply(iEntity);
 
     }
+
+    public void deleteIncome(Long incomeId) {
+        incomeRepository.findById(incomeId).map(entity->{
+            incomeRepository.delete(entity);
+            return ResponseEntity.ok().build();
+        }).orElseThrow(()->new NullPointerException("Income with id "+incomeId+" is not found"));
+    }
 }

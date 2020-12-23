@@ -30,7 +30,7 @@ public class ExpensesController {
     }
 
     @DeleteMapping("/expenses")
-    public void deleteExpenses(Long expensesId) {
+    public void deleteExpenses(@RequestParam(value = "expensesId") Long expensesId) {
         expensesService.deleteExpenses(expensesId);
     }
 }

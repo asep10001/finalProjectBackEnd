@@ -30,4 +30,9 @@ public class IncomeController {
     ) {
         return incomeService.createAnIncome(request, id);
     }
+
+    @DeleteMapping("/incomes")
+    public void deleteExpenses( @RequestParam(value = "incomeId") Long incomeId) {
+        incomeService.deleteIncome(incomeId);
+    }
 }
