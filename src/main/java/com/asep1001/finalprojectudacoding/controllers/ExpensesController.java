@@ -3,6 +3,7 @@ package com.asep1001.finalprojectudacoding.controllers;
 import com.asep1001.finalprojectudacoding.model.Expenses;
 import com.asep1001.finalprojectudacoding.services.ExpensesService;
 import com.asep1001.finalprojectudacoding.services.dto.ExpensesDTO;
+import com.asep1001.finalprojectudacoding.services.dto.IncomeDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,13 @@ public class ExpensesController {
         return expensesService.createAnExpenses(request, id);
     }
 
+    @PutMapping("/expenses/{id}")
+    public ResponseEntity<ExpensesDTO> updateAnExpensesById(
+            @Valid @RequestBody ExpensesDTO expensesDto,
+            @PathVariable(value = "id") Long id,
+            @RequestParam(value = "categoryId") Long categoryId) {
+        return expensesService.updateExpenses(expensesDto, id, categoryId);
+    }
     @DeleteMapping("/expenses")
     public void deleteExpenses(@RequestParam(value = "expensesId") Long expensesId) {
         expensesService.deleteExpenses(expensesId);

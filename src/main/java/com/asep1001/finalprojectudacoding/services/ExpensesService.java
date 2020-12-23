@@ -39,29 +39,42 @@ public class ExpensesService {
         return (x) -> ExpensesMapper.INSTANCE.toDto(x);
     }
 
-    public ResponseEntity<List<ExpensesDTO>> getAllExpenses(){
+    public ResponseEntity<List<ExpensesDTO>> getAllExpenses() {
         return this.getAll().apply(expensesRepository.findAll());
     }
 
-    public ResponseEntity<ExpensesDTO> createAnExpenses(Expenses request, Long categoryId){
+    public ResponseEntity<ExpensesDTO> createAnExpenses(Expenses request, Long categoryId) {
         Category cEntity = categoryRepostitory.findById(categoryId).get();
 
-        Expenses eEntity =Expenses.builder()
+        Expenses eEntity = Expenses.builder()
                 .name(request.getName())
                 .ammount(request.getAmmount())
                 .transaction_date(request.getTransaction_date())
                 .category(cEntity)
                 .build();
-           expensesRepository.save(eEntity);
+        expensesRepository.save(eEntity);
 
-           return this.getAnExpenses().apply(eEntity);
+        return this.getAnExpenses().apply(eEntity);
 
     }
 
-    public void deleteExpenses(Long expensesId){
-        expensesRepository.findById(expensesId).map(entity->{
+    public void deleteExpenses(Long expensesId) {
+        expensesRepository.findById(expensesId).map(entity -> {
             expensesRepository.delete(entity);
             return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new NullPointerException("expenses with id  "+expensesId+" is not found"));
+        }).orElseThrow(() -> new NullPointerException("expenses with id  " + expensesId + " is not found"));
+    }
+
+    public ResponseEntity<ExpensesDTO> updateExpenses(ExpensesDTO expensesDto, Long id, Long categoryId) {
+        Category cEntity = categoryRepostitory.findById(categoryId).orElseThrow(() -> new NullPointerException("Category with id " + categoryId + " is not found"));
+        return this.getAnExpenses().apply(expensesRepository.findById(id).map(expenses -> {
+            expenses.setName(expensesDto.getName());
+            expenses.setAmmount(expensesDto.getAmmount());
+            expenses.setTransaction_date(expensesDto.getTransaction_date());
+            expenses.setCategory(cEntity);
+
+            return expensesRepository.save(expenses);
+
+        }).orElseThrow(() -> new NullPointerException("Expenses with id " + id + " is not found")));
     }
 }
