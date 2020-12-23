@@ -50,13 +50,13 @@ public class CategoryService {
             rEntity = ResponseDto.builder()
                     .isSuccess(false)
                     .message("Data not found")
-                    .categoryDtos(this.toDtos().apply(categoryRepostitory.findAll()))
+                    .data(this.toDtos().apply(categoryRepostitory.findAll()))
                     .build();
         } else {
             rEntity = ResponseDto.builder()
                     .isSuccess(true)
                     .message("Success get data")
-                    .categoryDtos(this.toDtos().apply(categoryRepostitory.findAll()))
+                    .data(this.toDtos().apply(categoryRepostitory.findAll()))
                     .build();
         }
         responseDto = rEntity;

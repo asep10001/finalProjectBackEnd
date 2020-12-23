@@ -13,5 +13,5 @@ import java.util.List;
 public class ResponseDto {
     private Boolean isSuccess;
     private String message;
-    private List<CategoryDTO> categoryDtos;
+    private List<CategoryDTO> data;
 }
