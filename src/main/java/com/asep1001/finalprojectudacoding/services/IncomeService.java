@@ -64,7 +64,7 @@ public class IncomeService {
     public void deleteIncome(Long incomeId) {
         incomeRepository.findById(incomeId).map(entity -> {
             incomeRepository.delete(entity);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
         }).orElseThrow(() -> new NullPointerException("Income with id " + incomeId + " is not found"));
     }
 

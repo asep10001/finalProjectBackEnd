@@ -61,7 +61,7 @@ public class ExpensesService {
     public void deleteExpenses(Long expensesId) {
         expensesRepository.findById(expensesId).map(entity -> {
             expensesRepository.delete(entity);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
         }).orElseThrow(() -> new NullPointerException("expenses with id  " + expensesId + " is not found"));
     }
 
@@ -71,7 +71,7 @@ public class ExpensesService {
             expenses.setName(expensesDto.getName());
             expenses.setAmmount(expensesDto.getAmmount());
             expenses.setTransaction_date(expensesDto.getTransaction_date());
-            expenses.setCategory(cEntity); 
+            expenses.setCategory(cEntity);
 
             return expensesRepository.save(expenses);
 

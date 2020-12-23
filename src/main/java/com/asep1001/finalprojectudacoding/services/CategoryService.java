@@ -61,7 +61,7 @@ public class CategoryService {
     public void deleteCategory(Long categoryId) {
         categoryRepostitory.findById(categoryId).map(entity -> {
             categoryRepostitory.delete(entity);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
         }).orElseThrow(() -> new NullPointerException("Category with id" + categoryId + "is not found"));
     }
 
