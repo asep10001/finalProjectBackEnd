@@ -71,7 +71,7 @@ public class ExpensesService {
             expenses.setName(expensesDto.getName());
             expenses.setAmmount(expensesDto.getAmmount());
             expenses.setTransaction_date(expensesDto.getTransaction_date());
-            expenses.setCategory(cEntity);
+            expenses.setCategory(cEntity); 
 
             return expensesRepository.save(expenses);
 
