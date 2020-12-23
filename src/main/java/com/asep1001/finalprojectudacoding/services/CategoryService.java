@@ -58,8 +58,8 @@ public class CategoryService {
         return this.getACategory().apply(cEntity);
     }
 
-    public void deleteCategory(Long categoryId) {
-        categoryRepostitory.findById(categoryId).map(entity -> {
+    public ResponseEntity<String> deleteCategory(Long categoryId) {
+       return categoryRepostitory.findById(categoryId).map(entity -> {
             categoryRepostitory.delete(entity);
             return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
         }).orElseThrow(() -> new NullPointerException("Category with id" + categoryId + "is not found"));
