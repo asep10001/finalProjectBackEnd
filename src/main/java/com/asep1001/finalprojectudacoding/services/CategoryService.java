@@ -5,6 +5,7 @@ import com.asep1001.finalprojectudacoding.model.Expenses;
 import com.asep1001.finalprojectudacoding.model.Income;
 import com.asep1001.finalprojectudacoding.repository.CategoryRepostitory;
 import com.asep1001.finalprojectudacoding.services.dto.CategoryDTO;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseDto;
 import com.asep1001.finalprojectudacoding.services.mapper.CategoryMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,10 +42,12 @@ public class CategoryService {
         return (x) -> new ResponseEntity<>(this.toDto().apply(x), HttpStatus.OK);
     }
 
+    private Function<ResponseEntity<List<CategoryDTO>>, ResponseEntity<ResponseDto>>
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         return this.getAll().apply(categoryRepostitory.findAll());
     }
 
+    public  setResponse
 
     public ResponseEntity<CategoryDTO> createCategory(Category request) {
         List<Expenses> tempExpenses = new ArrayList<>();
@@ -61,7 +64,7 @@ public class CategoryService {
     public ResponseEntity<String> deleteCategory(Long categoryId) {
        return categoryRepostitory.findById(categoryId).map(entity -> {
             categoryRepostitory.delete(entity);
-            return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<String>("Deleted successfully", HttpStatus.OK);
         }).orElseThrow(() -> new NullPointerException("Category with id" + categoryId + "is not found"));
     }
 

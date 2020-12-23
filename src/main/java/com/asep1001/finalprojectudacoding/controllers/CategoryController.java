@@ -3,6 +3,7 @@ package com.asep1001.finalprojectudacoding.controllers;
 import com.asep1001.finalprojectudacoding.model.Category;
 import com.asep1001.finalprojectudacoding.services.CategoryService;
 import com.asep1001.finalprojectudacoding.services.dto.CategoryDTO;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class CategoryController {
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDTO>> getAllCategories(){
+    public ResponseEntity<ResponseDto> getAllCategories(){
         return categoryService.getAllCategories();
     }
 
