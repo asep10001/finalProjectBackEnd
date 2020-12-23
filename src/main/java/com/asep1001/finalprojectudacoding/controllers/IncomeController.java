@@ -1,9 +1,7 @@
 package com.asep1001.finalprojectudacoding.controllers;
 
-import com.asep1001.finalprojectudacoding.model.Category;
 import com.asep1001.finalprojectudacoding.model.Income;
 import com.asep1001.finalprojectudacoding.services.IncomeService;
-import com.asep1001.finalprojectudacoding.services.dto.CategoryDTO;
 import com.asep1001.finalprojectudacoding.services.dto.IncomeDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +18,7 @@ public class IncomeController {
     }
 
     @GetMapping("/incomes")
-    public ResponseEntity<List<IncomeDTO>> getAllIncomes(){
+    public ResponseEntity<List<IncomeDTO>> getAllIncomes() {
         return incomeService.getAllIncomes();
     }
 
@@ -31,8 +29,16 @@ public class IncomeController {
         return incomeService.createAnIncome(request, id);
     }
 
+    @PutMapping("/incomes/{id}")
+    public ResponseEntity<IncomeDTO> updateAnIncomeById(
+            @Valid @RequestBody IncomeDTO incomeDto,
+            @PathVariable(value = "id") Long id,
+            @RequestParam(value = "categoryId") Long categoryId) {
+        return incomeService.updateIncome(incomeDto, id, categoryId);
+    }
+
     @DeleteMapping("/incomes")
-    public void deleteExpenses( @RequestParam(value = "incomeId") Long incomeId) {
+    public void deleteExpenses(@RequestParam(value = "incomeId") Long incomeId) {
         incomeService.deleteIncome(incomeId);
     }
 }

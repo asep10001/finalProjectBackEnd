@@ -62,9 +62,23 @@ public class IncomeService {
     }
 
     public void deleteIncome(Long incomeId) {
-        incomeRepository.findById(incomeId).map(entity->{
+        incomeRepository.findById(incomeId).map(entity -> {
             incomeRepository.delete(entity);
             return ResponseEntity.ok().build();
-        }).orElseThrow(()->new NullPointerException("Income with id "+incomeId+" is not found"));
+        }).orElseThrow(() -> new NullPointerException("Income with id " + incomeId + " is not found"));
+    }
+
+    public ResponseEntity<IncomeDTO> updateIncome(IncomeDTO incomeDto, Long id, Long categoryId) {
+        Category cEntity = categoryRepostitory.findById(categoryId).orElseThrow(() ->
+                new NullPointerException("Category with id" + categoryId + " is not found"));
+
+        return this.getAnIncome().apply(incomeRepository.findById(id).map(income -> {
+            income.setName(incomeDto.getName());
+            income.setAmmount(incomeDto.getAmmount());
+            income.setTransaction_date(incomeDto.getTransaction_date());
+            income.setCategory(cEntity);
+
+            return incomeRepository.save(income);
+        }).orElseThrow(() -> new NullPointerException("Income with id " + id + " is not found")));
     }
 }
