@@ -64,4 +64,12 @@ public class CategoryService {
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new NullPointerException("Category with id" + categoryId + "is not found"));
     }
+
+    public ResponseEntity<CategoryDTO> updateCategory(CategoryDTO categoryDto, Long id) {
+        return categoryRepostitory.findById(id).map(category -> {
+            category.setName(categoryDto.getName());
+            categoryRepostitory.save(category);
+            return this.getACategory().apply(category);
+        }).orElse(null);
+    }
 }
