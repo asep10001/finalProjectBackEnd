@@ -57,4 +57,11 @@ public class ExpensesService {
            return this.getAnExpenses().apply(eEntity);
 
     }
+
+    public void deleteExpenses(Long expensesId){
+        expensesRepository.findById(expensesId).map(entity->{
+            expensesRepository.delete(entity);
+            return ResponseEntity.ok().build();
+        }).orElseThrow(() -> new NullPointerException("expenses with id  "+expensesId+" is not found"));
+    }
 }

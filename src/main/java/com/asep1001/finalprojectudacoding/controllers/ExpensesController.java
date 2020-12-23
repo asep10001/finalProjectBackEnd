@@ -19,13 +19,18 @@ public class ExpensesController {
 
     @GetMapping("/expenses")
     public ResponseEntity<List<ExpensesDTO>> getAll() {
-        return  expensesService.getAllExpenses();
+        return expensesService.getAllExpenses();
     }
 
     @PostMapping("/expenses")
     public ResponseEntity<ExpensesDTO> saveExpenses(
             @Valid @RequestBody Expenses request, @RequestParam(value = "categoryId") Long id
-            ){
+    ) {
         return expensesService.createAnExpenses(request, id);
+    }
+
+    @DeleteMapping("/expenses")
+    public void deleteExpenses(Long expensesId) {
+        expensesService.deleteExpenses(expensesId);
     }
 }
