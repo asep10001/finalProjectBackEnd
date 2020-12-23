@@ -42,12 +42,15 @@ public class CategoryService {
         return (x) -> new ResponseEntity<>(this.toDto().apply(x), HttpStatus.OK);
     }
 
-    private Function<ResponseEntity<List<CategoryDTO>>, ResponseEntity<ResponseDto>>
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        return this.getAll().apply(categoryRepostitory.findAll());
+    public ResponseEntity<ResponseDto> getAllCategories() {
+        ResponseDto rEntity = ResponseDto.builder()
+                .isSuccess(true)
+                .message("Success")
+                .categoryDtos(this.toDtos().apply(categoryRepostitory.findAll()))
+                .build();
+        return new ResponseEntity<>(rEntity, HttpStatus.OK);
     }
 
-    public  setResponse
 
     public ResponseEntity<CategoryDTO> createCategory(Category request) {
         List<Expenses> tempExpenses = new ArrayList<>();
