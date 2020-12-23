@@ -46,7 +46,7 @@ public class CategoryService {
     }
 
 
-    public ResponseEntity<CategoryDTO> createCategory(Category request){
+    public ResponseEntity<CategoryDTO> createCategory(Category request) {
         List<Expenses> tempExpenses = new ArrayList<>();
         List<Income> tempIncomes = new ArrayList<>();
         Category cEntity = Category.builder()
@@ -56,5 +56,12 @@ public class CategoryService {
                 .build();
         categoryRepostitory.save(cEntity);
         return this.getACategory().apply(cEntity);
+    }
+
+    public void deleteCategory(Long categoryId) {
+        categoryRepostitory.findById(categoryId).map(entity -> {
+            categoryRepostitory.delete(entity);
+            return ResponseEntity.ok().build();
+        }).orElseThrow(() -> new NullPointerException("Category with id" + categoryId + "is not found"));
     }
 }

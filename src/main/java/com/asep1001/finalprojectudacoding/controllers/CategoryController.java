@@ -29,9 +29,14 @@ public class CategoryController {
     }
 
     @PostMapping("/categories")
-    public ResponseEntity<CategoryDTO> saveAuthor(
+    public ResponseEntity<CategoryDTO> createCategory(
             @Valid @RequestBody Category request
     ) {
         return categoryService.createCategory(request);
+    }
+
+    @DeleteMapping("/categories")
+    public void deleteCategory(@RequestParam(value = "categoryId") Long id){
+        categoryService.deleteCategory(id);
     }
 }
