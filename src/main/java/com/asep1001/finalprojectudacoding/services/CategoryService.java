@@ -43,12 +43,24 @@ public class CategoryService {
     }
 
     public ResponseEntity<ResponseDto> getAllCategories() {
-        ResponseDto rEntity = ResponseDto.builder()
-                .isSuccess(true)
-                .message("Success")
-                .categoryDtos(this.toDtos().apply(categoryRepostitory.findAll()))
-                .build();
-        return new ResponseEntity<>(rEntity, HttpStatus.OK);
+        List<CategoryDTO> listCategory = this.toDtos().apply(categoryRepostitory.findAll());
+        ResponseDto responseDto;
+        ResponseDto rEntity;
+        if (listCategory.isEmpty()) {
+            rEntity = ResponseDto.builder()
+                    .isSuccess(false)
+                    .message("Data not found")
+                    .categoryDtos(this.toDtos().apply(categoryRepostitory.findAll()))
+                    .build();
+        } else {
+            rEntity = ResponseDto.builder()
+                    .isSuccess(true)
+                    .message("Success get data")
+                    .categoryDtos(this.toDtos().apply(categoryRepostitory.findAll()))
+                    .build();
+        }
+        responseDto = rEntity;
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 
@@ -65,7 +77,7 @@ public class CategoryService {
     }
 
     public ResponseEntity<String> deleteCategory(Long categoryId) {
-       return categoryRepostitory.findById(categoryId).map(entity -> {
+        return categoryRepostitory.findById(categoryId).map(entity -> {
             categoryRepostitory.delete(entity);
             return new ResponseEntity<String>("Deleted successfully", HttpStatus.OK);
         }).orElseThrow(() -> new NullPointerException("Category with id" + categoryId + "is not found"));
