@@ -5,6 +5,7 @@ import com.asep1001.finalprojectudacoding.model.Expenses;
 import com.asep1001.finalprojectudacoding.model.Income;
 import com.asep1001.finalprojectudacoding.repository.CategoryRepostitory;
 import com.asep1001.finalprojectudacoding.services.dto.CategoryDTO;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseActions;
 import com.asep1001.finalprojectudacoding.services.dto.ResponseCategory;
 import com.asep1001.finalprojectudacoding.services.mapper.CategoryMapper;
 import org.springframework.http.HttpStatus;
@@ -64,7 +65,7 @@ public class CategoryService {
     }
 
 
-    public ResponseEntity<CategoryDTO> createCategory(Category request) {
+    public ResponseEntity<ResponseActions> createCategory(Category request) {
         List<Expenses> tempExpenses = new ArrayList<>();
         List<Income> tempIncomes = new ArrayList<>();
         Category cEntity = Category.builder()
@@ -73,21 +74,25 @@ public class CategoryService {
                 .incomes(tempIncomes)
                 .build();
         categoryRepostitory.save(cEntity);
-        return this.getACategory().apply(cEntity);
+
+        if(cEntity.getName() != null){
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Inserting 1 data successfully").build(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Cannot insert data").build(), HttpStatus.OK);
     }
 
-    public ResponseEntity<String> deleteCategory(Long categoryId) {
+    public ResponseEntity<ResponseActions> deleteCategory(Long categoryId) {
         return categoryRepostitory.findById(categoryId).map(entity -> {
             categoryRepostitory.delete(entity);
-            return new ResponseEntity<String>("Deleted successfully", HttpStatus.OK);
-        }).orElseThrow(() -> new NullPointerException("Category with id" + categoryId + "is not found"));
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Deleted " + entity.getName() + " successfully").build(), HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Cannot find category with id " + categoryId).build(), HttpStatus.OK));
     }
 
-    public ResponseEntity<CategoryDTO> updateCategory(CategoryDTO categoryDto, Long id) {
+    public ResponseEntity<ResponseActions> updateCategory(CategoryDTO categoryDto, Long id) {
         return categoryRepostitory.findById(id).map(category -> {
             category.setName(categoryDto.getName());
             categoryRepostitory.save(category);
-            return this.getACategory().apply(category);
-        }).orElse(null);
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Updated category with id " + id + " successfully").build(), HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Updating category with id  " +id + " failed").build(), HttpStatus.OK));
     }
 }
