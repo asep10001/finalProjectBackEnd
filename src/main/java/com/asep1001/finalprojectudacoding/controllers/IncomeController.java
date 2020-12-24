@@ -3,6 +3,7 @@ package com.asep1001.finalprojectudacoding.controllers;
 import com.asep1001.finalprojectudacoding.model.Income;
 import com.asep1001.finalprojectudacoding.services.IncomeService;
 import com.asep1001.finalprojectudacoding.services.dto.IncomeDTO;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseIncome;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class IncomeController {
     }
 
     @GetMapping("/incomes")
-    public ResponseEntity<List<IncomeDTO>> getAllIncomes() {
+    public ResponseEntity<ResponseIncome> getAllIncomes() {
         return incomeService.getAllIncomes();
     }
 

@@ -3,11 +3,10 @@ package com.asep1001.finalprojectudacoding.controllers;
 import com.asep1001.finalprojectudacoding.model.Category;
 import com.asep1001.finalprojectudacoding.services.CategoryService;
 import com.asep1001.finalprojectudacoding.services.dto.CategoryDTO;
-import com.asep1001.finalprojectudacoding.services.dto.ResponseDto;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseCategory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import javax.validation.Valid;
 
 
@@ -25,7 +24,7 @@ public class CategoryController {
     }
 
     @GetMapping("/categories")
-    public ResponseEntity<ResponseDto> getAllCategories(){
+    public ResponseEntity<ResponseCategory> getAllCategories(){
         return categoryService.getAllCategories();
     }
 

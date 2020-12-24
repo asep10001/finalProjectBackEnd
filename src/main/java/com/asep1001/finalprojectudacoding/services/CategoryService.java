@@ -5,7 +5,7 @@ import com.asep1001.finalprojectudacoding.model.Expenses;
 import com.asep1001.finalprojectudacoding.model.Income;
 import com.asep1001.finalprojectudacoding.repository.CategoryRepostitory;
 import com.asep1001.finalprojectudacoding.services.dto.CategoryDTO;
-import com.asep1001.finalprojectudacoding.services.dto.ResponseDto;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseCategory;
 import com.asep1001.finalprojectudacoding.services.mapper.CategoryMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,25 +42,25 @@ public class CategoryService {
         return (x) -> new ResponseEntity<>(this.toDto().apply(x), HttpStatus.OK);
     }
 
-    public ResponseEntity<ResponseDto> getAllCategories() {
+    public ResponseEntity<ResponseCategory> getAllCategories() {
         List<CategoryDTO> listCategory = this.toDtos().apply(categoryRepostitory.findAll());
-        ResponseDto responseDto;
-        ResponseDto rEntity;
+        ResponseCategory responseCategory;
+        ResponseCategory rEntity;
         if (listCategory.isEmpty()) {
-            rEntity = ResponseDto.builder()
+            rEntity = ResponseCategory.builder()
                     .isSuccess(false)
                     .message("Data not found")
-                    .data(this.toDtos().apply(categoryRepostitory.findAll()))
+                    .data(listCategory)
                     .build();
         } else {
-            rEntity = ResponseDto.builder()
+            rEntity = ResponseCategory.builder()
                     .isSuccess(true)
                     .message("Success get data")
-                    .data(this.toDtos().apply(categoryRepostitory.findAll()))
+                    .data(listCategory)
                     .build();
         }
-        responseDto = rEntity;
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        responseCategory = rEntity;
+        return new ResponseEntity<>(responseCategory, HttpStatus.OK);
     }
 
 
