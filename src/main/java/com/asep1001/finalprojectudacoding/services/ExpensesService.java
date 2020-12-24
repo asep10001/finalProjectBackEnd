@@ -5,6 +5,7 @@ import com.asep1001.finalprojectudacoding.model.Expenses;
 import com.asep1001.finalprojectudacoding.repository.CategoryRepostitory;
 import com.asep1001.finalprojectudacoding.repository.ExpensesRepository;
 import com.asep1001.finalprojectudacoding.services.dto.ExpensesDTO;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseExpenses;
 import com.asep1001.finalprojectudacoding.services.mapper.ExpensesMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,24 @@ public class ExpensesService {
         return (x) -> ExpensesMapper.INSTANCE.toDto(x);
     }
 
-    public ResponseEntity<List<ExpensesDTO>> getAllExpenses() {
-        return this.getAll().apply(expensesRepository.findAll());
+    public ResponseEntity<ResponseExpenses> getAllExpenses() {
+        List<ExpensesDTO> expensesDTOS= this.toDtos().apply(expensesRepository.findAll());
+        ResponseExpenses rexEntity = null;
+        if(expensesDTOS.isEmpty()){
+            rexEntity = ResponseExpenses.builder()
+                    .isSuccess(false)
+                    .message("Failed to retrieve Expenses Data")
+                    .data(expensesDTOS)
+                    .build();
+
+        } else{
+            rexEntity = ResponseExpenses.builder()
+                    .isSuccess(true)
+                    .message("Successfully retrieved Expenses Data")
+                    .data(expensesDTOS)
+                    .build();
+        }
+        return new ResponseEntity<>(rexEntity, HttpStatus.OK);
     }
 
     public ResponseEntity<ExpensesDTO> createAnExpenses(Expenses request, Long categoryId) {

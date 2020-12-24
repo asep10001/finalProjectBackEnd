@@ -4,6 +4,7 @@ import com.asep1001.finalprojectudacoding.model.Expenses;
 import com.asep1001.finalprojectudacoding.services.ExpensesService;
 import com.asep1001.finalprojectudacoding.services.dto.ExpensesDTO;
 import com.asep1001.finalprojectudacoding.services.dto.IncomeDTO;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseExpenses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class ExpensesController {
     }
 
     @GetMapping("/expenses")
-    public ResponseEntity<List<ExpensesDTO>> getAll() {
+    public ResponseEntity<ResponseExpenses> getAll() {
         return expensesService.getAllExpenses();
     }
 
