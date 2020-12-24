@@ -5,6 +5,7 @@ import com.asep1001.finalprojectudacoding.model.Income;
 import com.asep1001.finalprojectudacoding.repository.CategoryRepostitory;
 import com.asep1001.finalprojectudacoding.repository.IncomeRepository;
 import com.asep1001.finalprojectudacoding.services.dto.IncomeDTO;
+import com.asep1001.finalprojectudacoding.services.dto.ResponseActions;
 import com.asep1001.finalprojectudacoding.services.dto.ResponseIncome;
 import com.asep1001.finalprojectudacoding.services.mapper.IncomeMapper;
 import org.springframework.http.HttpStatus;
@@ -62,7 +63,7 @@ public class IncomeService {
         return new ResponseEntity<>(responseIncome, HttpStatus.OK);
     }
 
-    public ResponseEntity<IncomeDTO> createAnIncome(Income request, Long categoryId) {
+    public ResponseEntity<ResponseActions> createAnIncome(Income request, Long categoryId) {
 
         Category cEntity = categoryRepostitory.findById(categoryId).get();
         Income iEntity = Income.builder()
@@ -74,28 +75,31 @@ public class IncomeService {
 
         incomeRepository.save(iEntity);
 
-        return this.getAnIncome().apply(iEntity);
-
+        if(iEntity != null){
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Inserting 1 income data successfully").build(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Failed to insert income data").build(), HttpStatus.OK);
     }
 
-    public void deleteIncome(Long incomeId) {
-        incomeRepository.findById(incomeId).map(entity -> {
+    public ResponseEntity<ResponseActions> deleteIncome(Long incomeId) {
+       return incomeRepository.findById(incomeId).map(entity -> {
             incomeRepository.delete(entity);
-            return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
-        }).orElseThrow(() -> new NullPointerException("Income with id " + incomeId + " is not found"));
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Deleted 1 data successfully").build(), HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Income with id "+incomeId+" is not found").build(), HttpStatus.OK));
     }
 
-    public ResponseEntity<IncomeDTO> updateIncome(IncomeDTO incomeDto, Long id, Long categoryId) {
+    public ResponseEntity<ResponseActions> updateIncome(IncomeDTO incomeDto, Long id, Long categoryId) {
         Category cEntity = categoryRepostitory.findById(categoryId).orElseThrow(() ->
                 new NullPointerException("Category with id" + categoryId + " is not found"));
 
-        return this.getAnIncome().apply(incomeRepository.findById(id).map(income -> {
+        return incomeRepository.findById(id).map(income -> {
             income.setName(incomeDto.getName());
             income.setAmmount(incomeDto.getAmmount());
             income.setTransaction_date(incomeDto.getTransaction_date());
             income.setCategory(cEntity);
 
-            return incomeRepository.save(income);
-        }).orElseThrow(() -> new NullPointerException("Income with id " + id + " is not found")));
+            incomeRepository.save(income);
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Updating income with id " +id+" successfully").build(), HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Failed to update. Income with id"+id+" is not found").build(), HttpStatus.OK));
     }
 }
