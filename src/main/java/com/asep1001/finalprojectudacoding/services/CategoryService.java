@@ -84,7 +84,7 @@ public class CategoryService {
     public ResponseEntity<ResponseActions> deleteCategory(Long categoryId) {
         return categoryRepostitory.findById(categoryId).map(entity -> {
             categoryRepostitory.delete(entity);
-            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Deleted " + entity.getName() + " successfully").build(), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Deleted 1 data successfully").build(), HttpStatus.OK);
         }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Cannot find category with id " + categoryId).build(), HttpStatus.OK));
     }
 

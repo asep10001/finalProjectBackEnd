@@ -41,7 +41,7 @@ public class CategoryController {
         return categoryService.updateCategory(categoryDto, id);
     }
     @DeleteMapping("/categories")
-    public void deleteCategory(@RequestParam(value = "categoryId") Long id){
-        categoryService.deleteCategory(id);
+    public ResponseEntity<ResponseActions> deleteCategory(@RequestParam(value = "categoryId") Long id){
+        return categoryService.deleteCategory(id);
     }
 }
