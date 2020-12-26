@@ -31,7 +31,7 @@ public class IncomeController {
 
     @GetMapping("/incomes/search/category")
     public ResponseEntity<ResponseIncome> seacrhIncomesByCategory(@RequestParam(value = "categoryName") String categoryName){
-        return incomeService.getAllIncomesByName(categoryName);
+        return incomeService.getAllIncomesByCategoryName(categoryName);
     }
 
     @PostMapping("/incomes")
