@@ -29,7 +29,7 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/categories/search")
     public  ResponseEntity<ResponseCategory> getAllCategoriesByName(@RequestParam(value = "categoryName") String name){
         return categoryService.getAllCategoriesByName(name);
     }
