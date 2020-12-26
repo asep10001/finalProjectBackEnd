@@ -43,6 +43,26 @@ public class CategoryService {
         return (x) -> new ResponseEntity<>(this.toDto().apply(x), HttpStatus.OK);
     }
 
+    public ResponseEntity<ResponseCategory> getAllCategoriesByName(String categoryName) {
+        List<CategoryDTO> listCategories = this.toDtos().apply(categoryRepostitory.findCategoryByNameContaining(categoryName));
+        ResponseCategory rEntity;
+        if (listCategories.isEmpty()) {
+            rEntity = ResponseCategory.builder()
+                    .isSuccess(false)
+                    .message("There is no such categories")
+                    .data(listCategories)
+                    .build();
+        } else {
+            rEntity = ResponseCategory.builder()
+                    .isSuccess(true)
+                    .message("Success get data!")
+                    .data(listCategories)
+                    .build();
+        }
+        return new ResponseEntity<>(rEntity, HttpStatus.OK);
+    }
+
+
     public ResponseEntity<ResponseCategory> getAllCategories() {
         List<CategoryDTO> listCategory = this.toDtos().apply(categoryRepostitory.findAll());
         ResponseCategory responseCategory;
@@ -75,7 +95,7 @@ public class CategoryService {
                 .build();
         categoryRepostitory.save(cEntity);
 
-        if(cEntity.getName() != null){
+        if (cEntity.getName() != null) {
             return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Inserting 1 data successfully").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Cannot insert data").build(), HttpStatus.OK);
@@ -93,6 +113,6 @@ public class CategoryService {
             category.setName(categoryDto.getName());
             categoryRepostitory.save(category);
             return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Updated category with id " + id + " successfully").build(), HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Updating category with id  " +id + " failed").build(), HttpStatus.OK));
+        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Updating category with id  " + id + " failed").build(), HttpStatus.OK));
     }
 }

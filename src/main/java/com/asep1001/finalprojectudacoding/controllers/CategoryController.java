@@ -29,6 +29,11 @@ public class CategoryController {
         return categoryService.getAllCategories();
     }
 
+    @GetMapping("/categories")
+    public  ResponseEntity<ResponseCategory> getAllCategoriesByName(@RequestParam(value = "categoryName") String name){
+        return categoryService.getAllCategoriesByName(name);
+    }
+
     @PostMapping("/categories")
     public ResponseEntity<ResponseActions> createCategory(
             @Valid @RequestBody Category request
