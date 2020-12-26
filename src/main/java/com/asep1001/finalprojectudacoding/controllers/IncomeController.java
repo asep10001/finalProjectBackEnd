@@ -24,6 +24,16 @@ public class IncomeController {
         return incomeService.getAllIncomes();
     }
 
+    @GetMapping("/incomes/search/name")
+    public ResponseEntity<ResponseIncome> seacrhIncomesByName(@RequestParam(value = "incomeName") String incomeName){
+        return incomeService.getAllIncomesByName(incomeName);
+    }
+
+    @GetMapping("/incomes/search/category")
+    public ResponseEntity<ResponseIncome> seacrhIncomesByCategory(@RequestParam(value = "categoryName") String categoryName){
+        return incomeService.getAllIncomesByName(categoryName);
+    }
+
     @PostMapping("/incomes")
     public ResponseEntity<ResponseActions> saveIncome(
             @Valid @RequestBody Income request, @RequestParam(value = "categoryId") Long id

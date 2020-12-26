@@ -40,27 +40,42 @@ public class IncomeService {
         return (x) -> IncomeMapper.INSTANCE.toDto(x);
     }
 
+    private Function<List<IncomeDTO>, ResponseEntity<ResponseIncome>> getResponseIncomefromList() {
+        return (x) -> {
+            ResponseIncome riEntity;
+            if (x.isEmpty()) {
+                riEntity = ResponseIncome.builder()
+                        .isSuccess(false)
+                        .message("Data not found")
+                        .data(x)
+                        .build();
+
+            } else {
+                riEntity = ResponseIncome.builder()
+                        .isSuccess(true)
+                        .message("Success Retrieving Incomes data")
+                        .data(x)
+                        .build();
+            }
+
+            return new ResponseEntity<>(riEntity, HttpStatus.OK);
+        };
+
+    }
+
+    public ResponseEntity<ResponseIncome> getAllIncomesByName(String name) {
+        List<IncomeDTO> incomes = this.toDtos().apply(incomeRepository.findAllByNameContaining(name));
+        return this.getResponseIncomefromList().apply(incomes);
+    }
+
+    public ResponseEntity<ResponseIncome> getAllIncomesByCategoryName(String name){
+        List<IncomeDTO> incomes = this.toDtos().apply(incomeRepository.findAllByCategory_NameContaining(name));
+        return this.getResponseIncomefromList().apply(incomes);
+    }
+
     public ResponseEntity<ResponseIncome> getAllIncomes() {
         List<IncomeDTO> incomes = this.toDtos().apply(incomeRepository.findAll());
-        ResponseIncome responseIncome;
-        ResponseIncome riEntity;
-        if(incomes.isEmpty()){
-            riEntity = ResponseIncome.builder()
-                    .isSuccess(false)
-                    .message("Data not found")
-                    .data(incomes)
-                    .build();
-
-        } else{
-            riEntity = ResponseIncome.builder()
-                    .isSuccess(true)
-                    .message("Success Retrieving Incomes data")
-                    .data(incomes)
-                    .build();
-        }
-
-        responseIncome = riEntity;
-        return new ResponseEntity<>(responseIncome, HttpStatus.OK);
+        return this.getResponseIncomefromList().apply(incomes);
     }
 
     public ResponseEntity<ResponseActions> createAnIncome(Income request, Long categoryId) {
@@ -75,18 +90,19 @@ public class IncomeService {
 
         incomeRepository.save(iEntity);
 
-        if(iEntity != null){
+        if (iEntity != null) {
             return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Inserting 1 income data successfully").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Failed to insert income data").build(), HttpStatus.OK);
     }
 
     public ResponseEntity<ResponseActions> deleteIncome(Long incomeId) {
-       return incomeRepository.findById(incomeId).map(entity -> {
+        return incomeRepository.findById(incomeId).map(entity -> {
             incomeRepository.delete(entity);
             return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Deleted 1 data successfully").build(), HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Income with id "+incomeId+" is not found").build(), HttpStatus.OK));
+        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Income with id " + incomeId + " is not found").build(), HttpStatus.OK));
     }
+
 
     public ResponseEntity<ResponseActions> updateIncome(IncomeDTO incomeDto, Long id, Long categoryId) {
         Category cEntity = categoryRepostitory.findById(categoryId).orElseThrow(() ->
@@ -99,7 +115,7 @@ public class IncomeService {
             income.setCategory(cEntity);
 
             incomeRepository.save(income);
-            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Updating income with id " +id+" successfully").build(), HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Failed to update. Income with id"+id+" is not found").build(), HttpStatus.OK));
+            return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Updating income with id " + id + " successfully").build(), HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Failed to update. Income with id" + id + " is not found").build(), HttpStatus.OK));
     }
 }
