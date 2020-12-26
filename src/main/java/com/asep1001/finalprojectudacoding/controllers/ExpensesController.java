@@ -3,14 +3,12 @@ package com.asep1001.finalprojectudacoding.controllers;
 import com.asep1001.finalprojectudacoding.model.Expenses;
 import com.asep1001.finalprojectudacoding.services.ExpensesService;
 import com.asep1001.finalprojectudacoding.services.dto.ExpensesDTO;
-import com.asep1001.finalprojectudacoding.services.dto.IncomeDTO;
 import com.asep1001.finalprojectudacoding.services.dto.ResponseActions;
 import com.asep1001.finalprojectudacoding.services.dto.ResponseExpenses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 public class ExpensesController {
@@ -25,6 +23,15 @@ public class ExpensesController {
         return expensesService.getAllExpenses();
     }
 
+    @GetMapping("/expenses/search/category")
+    public ResponseEntity<ResponseExpenses> seacrhIncomesByCategory(@RequestParam(value = "categoryName") String categoryName){
+        return expensesService.getAllExpensesByCategoryName(categoryName);
+    }
+
+    @GetMapping("/expenses/search/expenses")
+    public ResponseEntity<ResponseExpenses> seacrhIncomesByName(@RequestParam(value = "expensesName") String expensesName){
+        return expensesService.getAllExpensesByName(expensesName);
+    }
     @PostMapping("/expenses")
     public ResponseEntity<ResponseActions> saveExpenses(
             @Valid @RequestBody Expenses request, @RequestParam(value = "categoryId") Long id

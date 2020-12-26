@@ -37,28 +37,44 @@ public class ExpensesService {
         return (x) -> new ResponseEntity<>(this.toDto().apply(x), HttpStatus.OK);
     }
 
+    private Function<List<ExpensesDTO>, ResponseEntity<ResponseExpenses>> getAllFunction() {
+        return (x) -> {
+            ResponseExpenses rexEntity = null;
+            if (x.isEmpty()) {
+                rexEntity = ResponseExpenses.builder()
+                        .isSuccess(false)
+                        .message("Failed to retrieve Expenses Data")
+                        .data(x)
+                        .build();
+
+            } else {
+                rexEntity = ResponseExpenses.builder()
+                        .isSuccess(true)
+                        .message("Successfully retrieved Expenses Data")
+                        .data(x)
+                        .build();
+            }
+
+            return new ResponseEntity<>(rexEntity, HttpStatus.OK);
+        };
+    }
+
     private Function<Expenses, ExpensesDTO> toDto() {
         return (x) -> ExpensesMapper.INSTANCE.toDto(x);
     }
 
     public ResponseEntity<ResponseExpenses> getAllExpenses() {
         List<ExpensesDTO> expensesDTOS = this.toDtos().apply(expensesRepository.findAll());
-        ResponseExpenses rexEntity = null;
-        if (expensesDTOS.isEmpty()) {
-            rexEntity = ResponseExpenses.builder()
-                    .isSuccess(false)
-                    .message("Failed to retrieve Expenses Data")
-                    .data(expensesDTOS)
-                    .build();
+        return this.getAllFunction().apply(expensesDTOS);
+    }
 
-        } else {
-            rexEntity = ResponseExpenses.builder()
-                    .isSuccess(true)
-                    .message("Successfully retrieved Expenses Data")
-                    .data(expensesDTOS)
-                    .build();
-        }
-        return new ResponseEntity<>(rexEntity, HttpStatus.OK);
+    public ResponseEntity<ResponseExpenses> getAllExpensesByName(String name) {
+        List<ExpensesDTO> expensesDTOS = this.toDtos().apply(expensesRepository.findAllByNameContaining(name));
+        return this.getAllFunction().apply(expensesDTOS);
+    }
+    public ResponseEntity<ResponseExpenses> getAllExpensesByCategoryName(String name) {
+        List<ExpensesDTO> expensesDTOS = this.toDtos().apply(expensesRepository.findAllByCategory_NameContaining(name));
+        return this.getAllFunction().apply(expensesDTOS);
     }
 
     public ResponseEntity<ResponseActions> createAnExpenses(Expenses request, Long categoryId) {
