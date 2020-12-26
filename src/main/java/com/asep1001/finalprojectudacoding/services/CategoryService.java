@@ -44,7 +44,7 @@ public class CategoryService {
     }
 
     public ResponseEntity<ResponseCategory> getAllCategoriesByName(String categoryName) {
-        List<CategoryDTO> listCategories = this.toDtos().apply(categoryRepostitory.findCategoryByNameContaining(categoryName));
+        List<CategoryDTO> listCategories = this.toDtos().apply(categoryRepostitory.findAllByNameContaining(categoryName));
         ResponseCategory rEntity;
         if (listCategories.isEmpty()) {
             rEntity = ResponseCategory.builder()

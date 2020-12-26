@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepostitory extends JpaRepository<Category, Long> {
-    List<Category> findCategoryByNameContaining(String categoryName);
+    List<Category> findAllByNameContaining(String categoryName);
 }
