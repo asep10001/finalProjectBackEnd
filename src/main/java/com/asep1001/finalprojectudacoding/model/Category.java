@@ -31,6 +31,9 @@ public class Category extends BaseEntity<String> implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "image", nullable = false)
+    private String image;
+
     @JsonManagedReference("category")
     @OneToMany(
             fetch = FetchType.LAZY,

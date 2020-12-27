@@ -92,6 +92,7 @@ public class CategoryService {
                 .name(request.getName())
                 .expenses(tempExpenses)
                 .incomes(tempIncomes)
+                .image(request.getImage())
                 .build();
         categoryRepostitory.save(cEntity);
 
@@ -111,6 +112,7 @@ public class CategoryService {
     public ResponseEntity<ResponseActions> updateCategory(CategoryDTO categoryDto, Long id) {
         return categoryRepostitory.findById(id).map(category -> {
             category.setName(categoryDto.getName());
+            category.setImage(categoryDto.getImage());
             categoryRepostitory.save(category);
             return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Updated category with id " + id + " successfully").build(), HttpStatus.OK);
         }).orElse(new ResponseEntity<>(ResponseActions.builder().isSuccess(false).message("Updating category with id  " + id + " failed").build(), HttpStatus.OK));

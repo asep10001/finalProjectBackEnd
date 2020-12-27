@@ -12,6 +12,7 @@ import java.util.List;
 public class CategoryDTO {
     private Long id;
     private String name;
+    private String image;
     private List<ExpensesDTO> expenses;
     private List<IncomeDTO> incomes;
 }

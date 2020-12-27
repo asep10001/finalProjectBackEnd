@@ -35,6 +35,9 @@ public class Expenses extends BaseEntity<String> implements Serializable {
     @Column(name = "ammount", nullable = false)
     private Double ammount;
 
+    @Column(name = "image", nullable = false)
+    private String image;
+
     @Column(name = "transaction_date", nullable = false)
     @Convert(converter = YearMonthIntegerAttributeConverter.class)
     private YearMonth transaction_date;

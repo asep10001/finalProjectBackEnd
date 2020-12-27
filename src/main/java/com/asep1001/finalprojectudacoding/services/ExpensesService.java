@@ -83,6 +83,7 @@ public class ExpensesService {
         Expenses eEntity = Expenses.builder()
                 .name(request.getName())
                 .ammount(request.getAmmount())
+                .image(request.getImage())
                 .transaction_date(request.getTransaction_date())
                 .category(cEntity)
                 .build();
@@ -107,6 +108,7 @@ public class ExpensesService {
         return expensesRepository.findById(id).map(expenses -> {
             expenses.setName(expensesDto.getName());
             expenses.setAmmount(expensesDto.getAmmount());
+            expenses.setImage(expensesDto.getImage());
             expenses.setTransaction_date(expensesDto.getTransaction_date());
             expenses.setCategory(cEntity);
 

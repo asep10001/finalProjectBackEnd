@@ -86,6 +86,7 @@ public class IncomeService {
                 .ammount(request.getAmmount())
                 .transaction_date(request.getTransaction_date())
                 .category(cEntity)
+                .image(request.getImage())
                 .build();
 
         incomeRepository.save(iEntity);
@@ -113,6 +114,7 @@ public class IncomeService {
             income.setAmmount(incomeDto.getAmmount());
             income.setTransaction_date(incomeDto.getTransaction_date());
             income.setCategory(cEntity);
+            income.setImage(incomeDto.getImage());
 
             incomeRepository.save(income);
             return new ResponseEntity<>(ResponseActions.builder().isSuccess(true).message("Updating income with id " + id + " successfully").build(), HttpStatus.OK);
